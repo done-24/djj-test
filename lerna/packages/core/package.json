@@ -1,0 +1,29 @@
+{
+  "name": "@dyy/core",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "summer_fi2021 <summer_fi2021@163.com>",
+  "homepage": "https://github.com/done-24/djj-test#readme",
+  "license": "ISC",
+  "main": "lib/core.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/done-24/djj-test.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/core.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/done-24/djj-test/issues"
+  },
+  "dependencies": {
+    "@dyy/utils": "^0.0.0"
+  }
+}
