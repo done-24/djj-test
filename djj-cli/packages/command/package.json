@@ -22,5 +22,6 @@
   },
   "bugs": {
     "url": "https://github.com/done-24/djj-test/issues"
-  }
+  },
+  "type": "module"
 }

@@ -1,4 +1,5 @@
-const Command = require('@djj/command');
+import Command from '@djj/command';
+import { log } from '@djj/utils'
 
 class InitCommand extends Command {
     get command() {
@@ -17,7 +18,7 @@ class InitCommand extends Command {
 
     get action() { // djj init vue -f -> vue { force: true }
         return (name, ops) => {
-            console.log(name, ops)
+            log.info(name, ops)
         }
     }
 }
@@ -26,4 +27,4 @@ function Init(instance) {
     return new InitCommand(instance)
 }
 
-module.exports = Init
+export default Init

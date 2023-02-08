@@ -24,6 +24,8 @@
     "url": "https://github.com/done-24/djj-test/issues"
   },
   "dependencies": {
-    "@djj/command": "^0.0.0"
-  }
+    "@djj/command": "^0.0.0",
+    "@djj/utils": "^0.0.0"
+  },
+  "type": "module"
 }
