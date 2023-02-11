@@ -24,6 +24,7 @@
     "url": "https://github.com/done-24/djj-test/issues"
   },
   "dependencies": {
+    "inquirer": "^9.1.4",
     "npmlog": "^7.0.1"
   },
   "type": "module"

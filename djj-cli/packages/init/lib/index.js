@@ -1,5 +1,6 @@
 import Command from '@djj/command';
-import { log } from '@djj/utils'
+import { log } from '@djj/utils';
+import createTemplate from './createTemplate.js';
 
 class InitCommand extends Command {
     get command() {
@@ -16,10 +17,10 @@ class InitCommand extends Command {
         ]
     }
 
-    get action() { // djj init vue -f -> vue { force: true }
-        return (name, ops) => {
-            log.info(name, ops)
-        }
+    async action(name, opts) { // djj init vue -f -> vue { force: true }
+        log.verbose('init', name, opts);
+        await createTemplate(name, opts)
+        return () => {}
     }
 }
 
