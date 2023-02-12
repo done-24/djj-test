@@ -1,16 +1,19 @@
-import { log, makeList, makeInput } from "@djj/utils"
+import { log, makeList, makeInput, getLatestVersion } from "@djj/utils"
+import { homedir } from 'node:os'
+import path from 'node:path';
+
 const ADD_TYPE_PROJECT = 'project'
 const ADD_TYPE_PAGE = 'page'
 const ADD_TEMPLATE = [
     {
         name: 'vue',
-        npmName: 'template_vue',
+        npmName: 'vue',
         value: 'template_vue',
         version: '1.0.0'
     },
     {
         name: 'react',
-        npmName: 'template_react',
+        npmName: 'react',
         vaule: 'template_react',
         version: '1.0.0'
     }
@@ -27,6 +30,12 @@ const ADD_TYPE = [
     }
 ]
 
+const TEMP_HOME = '.cli-djj';
+
+function makeTargetPath() {
+    return path.resolve(`${homedir()}/${TEMP_HOME}`, 'addTemplate');
+}
+
 function getAddType() {
     return makeList({
         choices: ADD_TYPE,
@@ -38,7 +47,13 @@ function getAddType() {
 function getAddName() {
     return makeInput({
         message: '请输入项目名称',
-        defaultValue: ''
+        defaultValue: '',
+        validate(v) {
+            if(v.length > 0) {
+                return true
+            }
+            return '请输入项目名称'
+          },
     })
 }
 
@@ -50,21 +65,26 @@ function getAddTemplate() {
 }
 
 async function createTemplate(name, ops) {
-    // 获取创建类型
-    const addType = await getAddType()
+    const { type, template } = ops
+    const addType = type || await getAddType()
     log.verbose('addType', addType)
     if(addType === ADD_TYPE_PROJECT) {
-        const addName = await getAddName()
+        const addName = name || await getAddName()
         log.verbose('addName', addName)
-        const addTemplate = await getAddTemplate()
+        const addTemplate = template || await getAddTemplate()
         log.verbose('addTemplate', addTemplate)
         const selectedTemplate = ADD_TEMPLATE.find(_ => _.value === addTemplate)
         log.verbose('selectedTemplate', selectedTemplate)
         // 获取最新版本号
+        const latestVersion = await getLatestVersion(selectedTemplate.npmName)
+        log.verbose('latestVersion', latestVersion);
+        selectedTemplate.version = latestVersion;
+        const targetPath = makeTargetPath()
         return {
             type: addType,
             name: addName,
-            template: selectedTemplate
+            template: selectedTemplate,
+            targetPath
         }
     }
 }
