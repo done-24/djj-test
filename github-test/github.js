@@ -1,5 +1,8 @@
 import GitServer from './gitServer.js'
 import axios from 'axios'
+import { execa } from 'execa'
+import path from 'node:path'
+import { pathExistsSync } from 'path-exists'
 
 const BASE_URL = 'https://api.github.com/'
 
@@ -40,8 +43,34 @@ class Github extends GitServer {
 
     post() {}
 
-    search(params) {
+    searchRep(params) {
         return this.get('/search/repositories', params)
+    }
+
+    searchTag(fullName) {
+        return this.get(`/repos/${fullName}/tags`)
+    }
+
+    getRepoUrl(fullName) {
+        return `https://github.com/${fullName}.git`
+    }
+
+    cloneRepo(fullName, tag) {
+        if(tag) {
+            return execa('git', ['clone', this.getRepoUrl(fullName), '-b', tag])
+        } else {
+            return execa('git', ['clone', this.getRepoUrl(fullName)])
+        }
+    }
+
+    installDep(cwd, fullName) {
+        const projectName = fullName.split('/')[1]
+
+        const projectPath = path.resolve(cwd, projectName)
+        if(pathExistsSync(projectPath)) {
+            return execa('npm', ['install'], { cwd: projectPath })
+        }
+        return null
     }
 }
 
